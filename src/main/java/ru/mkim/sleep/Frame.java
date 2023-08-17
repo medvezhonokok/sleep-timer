@@ -73,7 +73,11 @@ public class Frame extends JFrame implements ActionListener {
         final String[] args = e.getActionCommand().split("\\s+");
         try {
             final int countOfMinutesToShutdown = Integer.parseInt(args[args.length - 1]);
-            Utils.runScript(countOfMinutesToShutdown, field);
+            if (countOfMinutesToShutdown <= 0) {
+                field.setText("Please, type a positive count of minutes.");
+            } else {
+                Utils.runScript(countOfMinutesToShutdown, field);
+            }
         } catch (Exception ignored) {
             field.setText("Usage: ['10'] or ['Type some minutes there and then press 'Enter' 123'].");
         }
