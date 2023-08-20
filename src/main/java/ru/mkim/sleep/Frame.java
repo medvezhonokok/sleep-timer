@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.time.LocalTime;
 
 import static java.nio.charset.StandardCharsets.*;
 
@@ -76,10 +77,15 @@ public class Frame extends JFrame implements ActionListener {
             if (countOfMinutesToShutdown <= 0) {
                 field.setText("Please, type a positive count of minutes.");
             } else {
-                Utils.runScript(countOfMinutesToShutdown, field);
+                Utils.runScript(countOfMinutesToShutdown);
+                field.setText(String.format("Shutdown in: %s",
+                        String.valueOf(LocalTime.now().plusMinutes(countOfMinutesToShutdown)).split("\\.")[0]));
+                new Timer(2000, event -> this.dispose()).start();
             }
-        } catch (Exception ignored) {
+        } catch (NumberFormatException ignored) {
             field.setText("Usage: ['10'] or ['Type some minutes there and then press 'Enter' 123'].");
+        } catch (RuntimeException ex) {
+            field.setText("Unexpected error: " + ex.getMessage());
         }
     }
 

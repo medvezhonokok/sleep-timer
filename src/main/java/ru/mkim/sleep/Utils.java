@@ -1,9 +1,7 @@
 package ru.mkim.sleep;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.LocalTime;
 
 /**
  * A utility class that provides helper methods.
@@ -30,11 +28,10 @@ public final class Utils {
      * Runs a script to perform a shutdown after a specified number of minutes.
      *
      * @param minutesToShutdown the number of minutes until shutdown
-     * @param field             the JTextField to display the shutdown time
      * @throws RuntimeException if an error occurs while running the script
      */
     @SuppressWarnings("deprecation")
-    public static void runScript(int minutesToShutdown, JTextField field) {
+    public static void runScript(int minutesToShutdown) {
         scriptsDir = isWindows ? scriptsDir.resolve("sleep.bat") : scriptsDir.resolve("sleep.sh");
 
         Process process;
@@ -45,8 +42,5 @@ public final class Utils {
         } catch (IOException | InterruptedException ex) {
             throw new RuntimeException(ex);
         }
-
-        field.setText(String.format("Shutdown in: %s",
-                String.valueOf(LocalTime.now().plusMinutes(minutesToShutdown)).split("\\.")[0]));
     }
 }
