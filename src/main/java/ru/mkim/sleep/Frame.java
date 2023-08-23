@@ -32,7 +32,7 @@ public class Frame extends JFrame implements ActionListener {
     /**
      * The text field used for input.
      */
-    private static final JTextField field = new JTextField();
+    private static final JTextField TEXT_FIELD = new JTextField();
 
     /**
      * Pattern to handle strings with white spaces.
@@ -50,7 +50,7 @@ public class Frame extends JFrame implements ActionListener {
         setSize(WIDTH, HEIGHT);
         setVisible(true);
         initField();
-        add(field);
+        add(TEXT_FIELD);
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -59,13 +59,13 @@ public class Frame extends JFrame implements ActionListener {
      * Initializes the text field and adds an ActionListener to it.
      */
     private void initField() {
-        field.addActionListener(this);
-        field.setBounds(10, HEIGHT / 2, getWidth() - 30, getHeight() / 4);
+        TEXT_FIELD.addActionListener(this);
+        TEXT_FIELD.setBounds(10, HEIGHT / 2, getWidth() - 30, getHeight() / 4);
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                field.setBounds(10, getWidth() / 2, getWidth() - 30, getHeight() / 4 - 10);
-                field.setText(new String("Type some minutes there and then press 'Enter' ".getBytes(), UTF_8));
+                TEXT_FIELD.setBounds(10, getWidth() / 2, getWidth() - 30, getHeight() / 4 - 10);
+                TEXT_FIELD.setText(new String("Type some minutes there and then press 'Enter' ".getBytes(), UTF_8));
             }
         });
     }
@@ -82,17 +82,17 @@ public class Frame extends JFrame implements ActionListener {
         try {
             int countOfMinutesToShutdown = Integer.parseInt(tokens[tokens.length - 1]);
             if (countOfMinutesToShutdown <= 0) {
-                field.setText("Please, type a positive count of minutes.");
+                TEXT_FIELD.setText("Please, type a positive count of minutes.");
             } else {
                 Utils.runScript(countOfMinutesToShutdown);
-                field.setText(String.format("Shutdown in: %s.",
+                TEXT_FIELD.setText(String.format("Shutdown in: %s.",
                         String.valueOf(LocalTime.now().plusMinutes(countOfMinutesToShutdown)).split("\\.")[0]));
                 new Timer(2000, event -> this.dispose()).start();
             }
         } catch (NumberFormatException ignored) {
-            field.setText("Usage: ['10'] or ['Type some minutes there and then press 'Enter' 123'].");
+            TEXT_FIELD.setText("Usage: ['10'] or ['Type some minutes there and then press 'Enter' 123'].");
         } catch (RuntimeException ex) {
-            field.setText("Unexpected error: " + ex.getMessage());
+            TEXT_FIELD.setText("Unexpected error: " + ex.getMessage());
         }
     }
 
